@@ -16,7 +16,7 @@ weight: 8
 | BYTE_ARRAY                                |       |        |       |       |
 | FIXED_LEN_BYTE_ARRAY                      |       |        |       |       |
 
-* \(1) This type is deprecated, but as of 2024 it's common in currently produced parquet files.
+* \(1) This type is deprecated, but as of 2024 it's common in currently produced parquet files
 
 
 ### Logical types
@@ -57,18 +57,18 @@ weight: 8
 | DELTA_BYTE_ARRAY                          |       |        |       |       |
 | BYTE_STREAM_SPLIT                         |       |        |       |       |
 
-### Compression
+### Compressions
 
 | Compression                               | C++   | Java   | Go    | Rust  |
 | ----------------------------------------- | ----- | ------ | ----- | ----- |
 | UNCOMPRESSED                              |       |        |       |       |
-| SNAPPY                                    |       |        |       |       |
-| GZIP                                      |       |        |       |       |
-| LZO                                       |       |        |       |       |
 | BROTLI                                    |       |        |       |       |
+| GZIP                                      |       |        |       |       |
 | LZ4 (deprecated)                          |       |        |       |       |
-| ZSTD                                      |       |        |       |       |
 | LZ4_RAW                                   |       |        |       |       |
+| LZO                                       |       |        |       |       |
+| SNAPPY                                    |       |        |       |       |
+| ZSTD                                      |       |        |       |       |
 
 ### Other format level features
 
