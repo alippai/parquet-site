@@ -10,11 +10,14 @@ weight: 8
 | BOOLEAN                                   |       |        |       |       |
 | INT32                                     |       |        |       |       |
 | INT64                                     |       |        |       |       |
-| INT96                                     |       |        |       |       |
+| INT96 (1)                                 |       |        |       |       |
 | FLOAT                                     |       |        |       |       |
 | DOUBLE                                    |       |        |       |       |
 | BYTE_ARRAY                                |       |        |       |       |
 | FIXED_LEN_BYTE_ARRAY                      |       |        |       |       |
+
+* \(1) This type is deprecated, but as of 2024 it's common in currently produced parquet files.
+
 
 ### Logical types
 
@@ -23,8 +26,7 @@ weight: 8
 | STRING                                    |       |        |       |       |
 | ENUM                                      |       |        |       |       |
 | UUID                                      |       |        |       |       |
-| 8 and 16 bit signed INT                   |       |        |       |       |
-| 8, 16, 32, 64 bit unsigned INT            |       |        |       |       |
+| 8, 16, 32, 64 bit signed and unsigned INT |       |        |       |       |
 | DECIMAL (INT32)                           |       |        |       |       |
 | DECIMAL (INT64)                           |       |        |       |       |
 | DECIMAL (BYTE_ARRAY)                      |       |        |       |       |
@@ -32,16 +34,16 @@ weight: 8
 | DATE                                      |       |        |       |       |
 | TIME (INT32)                              |       |        |       |       |
 | TIME (INT64)                              |       |        |       |       |
-| TIMESTAMP (INT32)                         |       |        |       |       |
 | TIMESTAMP (INT64)                         |       |        |       |       |
 | INTERVAL                                  |       |        |       |       |
 | JSON                                      |       |        |       |       |
 | BSON                                      |       |        |       |       |
 | LIST                                      |       |        |       |       |
 | MAP                                       |       |        |       |       |
-| UNKNOWN                                   |       |        |       |       |
+| UNKNOWN (always null)                     |       |        |       |       |
+| FLOAT16                                   |       |        |       |       |
 
-### Encoding
+### Encodings
 
 | Encoding                                  | C++   | Java   | Go    | Rust  |
 | ----------------------------------------- | ----- | ------ | ----- | ----- |
@@ -49,7 +51,7 @@ weight: 8
 | PLAIN_DICTIONARY                          |       |        |       |       |
 | RLE_DICTIONARY                            |       |        |       |       |
 | RLE                                       |       |        |       |       |
-| BIT_PACKED                                |       |        |       |       |
+| BIT_PACKED (deprecated)                   |       |        |       |       |
 | DELTA_BINARY_PACKED                       |       |        |       |       |
 | DELTA_LENGTH_BYTE_ARRAY                   |       |        |       |       |
 | DELTA_BYTE_ARRAY                          |       |        |       |       |
@@ -64,7 +66,7 @@ weight: 8
 | GZIP                                      |       |        |       |       |
 | LZO                                       |       |        |       |       |
 | BROTLI                                    |       |        |       |       |
-| LZ4                                       |       |        |       |       |
+| LZ4 (deprecated)                          |       |        |       |       |
 | ZSTD                                      |       |        |       |       |
 | LZ4_RAW                                   |       |        |       |       |
 
@@ -72,30 +74,31 @@ weight: 8
 
 |                                           | C++   | Java   | Go    | Rust  |
 | ----------------------------------------- | ----- | ------ | ----- | ----- |
-| xxHash Bloom filters                      |       |        |       |       |
-| bloom filter length                       |       |        |       |       |
+| xxxHash-based bloom filters               |       |        |       |       |
+| Bloom filter length (1)                   |       |        |       |       |
 | Statistics min_value, max_value           |       |        |       |       |
-| Column index                              |       |        |       |       |
-| Offset index                              |       |        |       |       |
-| Modular encryption                        |       |        |       |       |
+| Page index                                |       |        |       |       |
 | Page CRC32 checksum                       |       |        |       |       |
 | Modular encryption                        |       |        |       |       |
+| Size statistics (2)                       |       |        |       |       |
 
-### High level data API-s for parquet feature usage
+
+* \(1) In parquet.thrift: ColumnMetaData->bloom_filter_length
+
+* \(2) In parquet.thrift: ColumnMetaData->size_statistics
+
+### High level data APIs for Parquet feature usage
 
 | Format                                       | C++   | Java   | Go    | Rust  |
 | -------------------------------------------- | ----- | ------ | ----- | ----- |
-| Hive-style partitioning                      |       |        |       |       |
-| Partition pruning on the partition column    |       |        |       |       |
-| External column data                         |       |        |       |       |
-| RowGroup Sorting column                      |       |        |       |       |
-| Read / Write RowGroup metadata and data (1)  |       |        |       |       |
-| RowGroup pruning using statistics            |       |        |       |       |
-| Read / Write page metadata and data (2)      |       |        |       |       |
-| Page pruning using projection pushdown       |       |        |       |       |
+| External column data (1)                     |       |        |       |       |
+| Row group "Sorting column" metadata (2)      |       |        |       |       |
+| Row group pruning using statistics           |       |        |       |       |
+| Reading select columns only                  |       |        |       |       |
 | Page pruning using statistics                |       |        |       |       |
 | Page pruning using bloom filter              |       |        |       |       |
 
-* \(1) Ability to construct RowGroup objects from existing RowGroups or raw values (eg. without decoding or decompressing lower level data when read)
 
-* \(2) Ability to construct Page objects from existing Pages or raw values (eg. without decoding or decompressing lower level data when read)
+* \(1) In parquet.thrift: ColumnChunk->file_path
+
+* \(2) In parquet.thrift: RowGroup->sorting_columns
