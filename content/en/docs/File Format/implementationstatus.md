@@ -3,6 +3,26 @@ title: "Implementation status"
 linkTitle: "Implementation status"
 weight: 8
 ---
+
+This page summarizes the features supported by different Parquet
+implementations.
+
+*Note*: This is a work in progress and we would welcome help expanding its scope.
+
+### Legend
+The value in each box means:
+* ✅: supported
+* ❌: not supported
+* (blank) no data
+
+Implementations:
+* `C++`: [parquet-cpp](https://github.com/apache/arrow/tree/main/cpp/src/parquet)
+* `Java`: [parquet-java](https://github.com/apache/parquet-java)
+* `Go`: [parquet-go](https://github.com/apache/arrow/tree/main/go/parquet)
+* `Rust`: [parquet-rs](https://github.com/apache/arrow-rs/blob/master/parquet/README.md)
+
+
+
 ### Physical types
 
 | Data type                                 | C++   | Java   | Go    | Rust  |
